@@ -51,7 +51,13 @@ Añade las siguientes variables:
         CLOUDINARY_API_KEY=<API_KEY_DE_CLOUDINARY>
         CLOUDINARY_API_SECRET=<API_SECRET_DE_CLOUDINARY>
 
-
+>> .env :
+- DB_URL=mongodb+srv://maarcsesa:3Vljn3gnGLH083Uw@cluster001recetas.hx8hy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster001RECETAS
+PORT=3014
+# pASSWORD:3Vljn3gnGLH083Uw
+CLOUDINARY_CLOUD_NAME=dhmrsz0cw
+CLOUDINARY_API_KEY=858156953687666
+CLOUDINARY_API_SECRET=U2FvOqoTU76LA8LmylZqCAIeFQo
 ## Uso
 Iniciar el servidor:
 
