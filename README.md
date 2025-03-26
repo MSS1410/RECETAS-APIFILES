@@ -1,17 +1,14 @@
 # API REST Files - Recetinhas
 
 ## Descripción
-Esta es una API REST para gestionar recetas (**Recetinhas**) y categorías de recetas (**Categorias**). Permite realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) tanto para recetas como para sus categorías asociadas.
 
----
+Este proyecto provee una API REST para gestionar **Recetas** (Recetinhas) y **Categorías**. Permite:
 
-## Características principales
-
-- **CRUD completo para recetas y categorías**.
-- Relación entre recetas y categorías.
-- Uso de **Cloudinary** para gestión de imágenes.
-- Manejo de errores controlado.
-- Middleware para rutas inexistentes y errores globales.
+- **CRUD** completo para Recetas y Categorías.
+- Relación entre Recetas y Categorías (cada Receta pertenece a una Categoría).
+- Subida de imágenes a **Cloudinary**.
+- Uso de **Mongoose** para manejar la base de datos **MongoDB**.
+- Manejo de errores y middlewares personalizados.
 
 ---
 
@@ -19,121 +16,184 @@ Esta es una API REST para gestionar recetas (**Recetinhas**) y categorías de re
 
 - **Node.js**
 - **Express**
-- **MongoDB** (con Mongoose)
+- **MongoDB** (Mongoose)
 - **Cloudinary** (almacenamiento de imágenes)
 - **dotenv** (manejo de variables de entorno)
+- **multer** (subida de archivos)
+
+---
+
+## Requisitos previos
+
+1. Tener instalado **Node.js** (versión 14 o superior).
+2. Tener una cuenta de **Cloudinary** (para almacenar imágenes).
+3. Tener un cluster de **MongoDB** o instalar **MongoDB localmente**.
 
 ---
 
 ## Instalación
 
-1. Clona este repositorio:
-   ```bash
-   git clone https://github.com/MSS1410/RECETAS-APIFILES.git
+### 1. Clonar el repositorio
 
 
-1. Ve al directorio del proyecto:
-cd API REST FILES
+ - git clone https://github.com/MI_USUARIO/MI_REPO.git
 
-1. Instala las dependencias:
-    ```bash
-    npm install
+  
+### 2. Entrar en el repositorio
 
-
-1. Configura las variables de entorno:
- Crea un archivo .env en la raíz del proyecto.
-Añade las siguientes variables:
+  - cd API-REST-FILES
 
 
-   ```bash
-   DB_URL=mongodb+srv://maarcsesa:3Vljn3gnGLH083Uw@cluster001recetas.hx8hy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster001RECETAS
-   PORT=3014
-   CLOUDINARY_CLOUD_NAME=dhmrsz0cw
-   CLOUDINARY_API_KEY=858156953687666
-   CLOUDINARY_API_SECRET=U2FvOqoTU76LA8LmylZqCAIeFQo
+### 3. Instalar dependencias
 
+npm install
 
-## Uso
-Iniciar el servidor:
+### 4. Configurar variables entorno
 
-    npm start
-    
-## Endpoints principales
-   > Categorías
-   
-  - Obtener todas las categoría:
-  GET /categorias
+- DB_URL=mongodb+srv://maarcsesa:3Vljn3gnGLH083Uw@cluster001recetas.hx8hy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster001RECETAS
+PORT=3016
+# pASSWORD:3Vljn3gnGLH083Uw
+- CLOUDINARY_CLOUD_NAME=dhmrsz0cw
+- CLOUDINARY_API_KEY=858156953687666
+- CLOUDINARY_API_SECRET=U2FvOqoTU76LA8LmylZqCAIeFQo
+
+  
+### 4. Scripts disponibles
+
+```json
+{
+  "scripts": {
+    "start": "node index.js",
+    "seed": "node src/utils/seeds/seedDataBase.js"
+  }
+}
 ```
+- inicializar servidor:
+  npm  start
+- poblar base de datos
+  npm run seed
+
+ ### 5. Uso de la Api
+
+ La API expone dos conjuntos de endpoints:
+
+Recetinhas: prefijo /recetinhas
+
+Categorías: prefijo /categorias
+
+### Endpoints para Categorías
+  
+- GET /categorias
+Devuelve todas las categorías.
+
+Ejemplo de respuesta:
+```json
 [
   {
-    "_id": "<id>",
-    "nombre": "<nombre>",
-    "img": "<url_de_imagen>"
-  }
+    "_id": "64791630a...",
+    "tipo": "Postres",
+    "img": "https://res.cloudinary.com/..."
+  },
+  ...
 ]
+```
 
-````
+- POST /categorias
+Crea una nueva categoría (puede incluir imagen).
+Para subir la imagen, utiliza multipart/form-data con la clave img.
 
- - Crear una categoría:
-  POST /categorias
- ```
- {
-  "nombre": "<nombre>",
-  "img": "<ruta_de_imagen>"
-}
-
-````
-
--   Crear una categoría:
--   PUT /categorias/:id
-  ```
-  {
-  "nombre": "<nombre_actualizado>",
-  "img": "<ruta_de_nueva_imagen>"
-}
-````
-
-- Eliminar una categoría
-DELETE /categorias/:id
-
->Recetas
-
-- Obtener todas las recetas
-GET /recetinhas
-````
-[
-  {
-    "_id": "<id>",
-    "nombre": "<nombre>",
-    "categoria": {
-      "_id": "<id_categoria>",
-      "nombre": "<nombre_categoria>"
-    },
-    "img": "<url_de_imagen>"
-  }
-]
-
-````
-- Crear una receta
-POST /recetinhas
-````
+Body:
+```json
 {
-  "nombre": "<nombre>",
-  "categoria": "<id_categoria>",
-  "img": "<ruta_de_imagen>"
+  "tipo": "Postres"
 }
 
-````
-- Actualizar una receta
-PUT /recetinhas/:id
-````
+```
+
+- PUT /categorias/:id
+ Actualiza una categoría por su id.
+
+  ```json
+  {
+  "tipo": "Postres Actualizado"
+
+- DELETE /categorias/:id
+Elimina una categoría y, si existe, su imagen en Cloudinary.
+
+###Endpoints para recetinhas
+
+- GET /recetinhas
+Devuelve todas las recetas. Incluye la información completa de la categoría mediante populate('categoria').
+
+- POST /recetinhas
+Crea una nueva receta.
+Body de ejemplo:
+
+```json
 {
-  "nombre": "<nombre_actualizado>",
-  "categoria": "<id_categoria_actualizada>",
-  "img": "<ruta_de_nueva_imagen>"
+  "titulo": "Pizza Margarita",
+  "descripcion": "Pizza con tomate, albahaca y mozzarella",
+  "ingredientes": ["Tomate", "Mozzarella", "Albahaca"],
+  "pasos": ["Preparar la masa", "Agregar ingredientes", "Hornear"],
+  "categoria": "ID_de_una_categoria"
 }
-````
+```
+Puedes incluir una imagen utilizando multipart/form-data con la clave img.
 
-- Eliminar una receta
-DELETE /recetinhas/:id
+- PUT /recetinhas/:id
+Actualiza una receta por su id. Se pueden actualizar campos como titulo, descripcion, ingredientes, pasos y la imagen (img).
+
+- DELETE /recetinhas/:id
+Elimina la receta y su imagen asociada en Cloudinary.
+
+
+
+### Cómo probar la API
+
+- Usa herramientas como Postman, Insomnia o Thunder Client (extensión de VSCode) para realizar peticiones HTTP a los endpoints.
+
+- Para subir imágenes, asegúrate de configurar la petición como multipart/form-data y utiliza el campo img para enviar el archivo.
+
+- Verifica las respuestas y asegúrate de que los datos se están almacenando en MongoDB y las imágenes en Cloudinary.
+
+
+### Estructura del proyecto
+```bash
+API-REST-FILES
+│
+├── .env
+├── package.json
+├── index.js
+├── README.md
+│
+├── src
+│   ├── api
+│   │   ├── controllers
+│   │   │   ├── categorias.js
+│   │   │   └── recetinha.js
+│   │   ├── models
+│   │   │   ├── categorias.js
+│   │   │   └── recetinha.js
+│   │   └── routes
+│   │       ├── categorias.js
+│   │       └── recetinha.js
+│   │
+│   ├── config
+│   │   ├── db.js
+│   │   └── cloudinary.js
+│   │
+│   ├── middlewares
+│   │   └── file.js
+│   │
+│   └── utils
+│       ├── utils.js
+│       └── seeds
+│           └── seedDataBase.js
+│
+└── data
+    └── seedData.js
+
+```
+
+
 
