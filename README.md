@@ -29,10 +29,11 @@ Esta es una API REST para gestionar recetas (**Recetinhas**) y categorías de re
 
 1. Clona este repositorio:
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+   git clone https://github.com/MSS1410/RECETAS-APIFILES.git
+
 
 1. Ve al directorio del proyecto:
-cd <NOMBRE_DEL_DIRECTORIO>
+cd API REST FILES
 
 1. Instala las dependencias:
     ```bash
@@ -44,20 +45,14 @@ cd <NOMBRE_DEL_DIRECTORIO>
 Añade las siguientes variables:
 
 
-        ```BASh
-        PORT=3000
-        DB_URL=<URL_DE_TU_BASE_DE_DATOS_MONGODB>
-        CLOUDINARY_CLOUD_NAME=<NOMBRE_DE_TU_CUENTA_CLOUDINARY>
-        CLOUDINARY_API_KEY=<API_KEY_DE_CLOUDINARY>
-        CLOUDINARY_API_SECRET=<API_SECRET_DE_CLOUDINARY>
+   ```bash
+   DB_URL=mongodb+srv://maarcsesa:3Vljn3gnGLH083Uw@cluster001recetas.hx8hy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster001RECETAS
+   PORT=3014
+   CLOUDINARY_CLOUD_NAME=dhmrsz0cw
+   CLOUDINARY_API_KEY=858156953687666
+   CLOUDINARY_API_SECRET=U2FvOqoTU76LA8LmylZqCAIeFQo
 
->> .env :
-- DB_URL=mongodb+srv://maarcsesa:3Vljn3gnGLH083Uw@cluster001recetas.hx8hy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster001RECETAS
-PORT=3014
-# pASSWORD:3Vljn3gnGLH083Uw
-CLOUDINARY_CLOUD_NAME=dhmrsz0cw
-CLOUDINARY_API_KEY=858156953687666
-CLOUDINARY_API_SECRET=U2FvOqoTU76LA8LmylZqCAIeFQo
+
 ## Uso
 Iniciar el servidor:
 
